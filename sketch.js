@@ -66,30 +66,67 @@ function updateTimer() {
 
 function draw() {
   background('yellow');
-  background(airpods)
+  background(airpods);
+  push();
+  let minutes = Math.floor(currentTime / 60);
+  let seconds = currentTime % 60;
+  let formattedTime = nf(minutes, 2) + ':' + nf(seconds, 2);
+  textSize(18);
+  textStyle(BOLD);
+  fill(0);
+  text(formattedTime, 55, 100);
+  pop();
   scale(0.3);
   
   translate(width / 2 + 690, 1400); // Starting spotify tree
-  drawTree(angleSpotify, '#1DB954', '#1DB954', 0.8);
+  drawTree(angleSpotify, '#1DB954', '#1DB954', 0.8 , "Spotify");
 
   translate(0, 100); // Move to tiktok tree
   strokeWeight(0.2);
-  drawTree(angleTiktok,  '#EE1D52','#69C9D0', 0.6);
+  drawTree(angleTiktok,  '#EE1D52','#69C9D0', 0.6, "TikTok");
   
   scale(0.6);
   translate(0, 0); // Move to empty tree
-  drawTree(angleEmpty, 'white', 'yellow', 2.5);
+  drawTree(angleEmpty, 'white', 'yellow', 3, "Empty");
 }
 
-function drawTree(angle, color1, color2, strokeWeightVal) {
+function drawTree(angle, color1, color2, strokeWeightVal,label) {
   let gradient = drawingContext.createLinearGradient(0, 0, 0, -100);
   gradient.addColorStop(0, color1); // Start color
   gradient.addColorStop(1, color2); // End color
 
   drawingContext.strokeStyle = gradient;
   drawBranch(angle, strokeWeightVal);
+  
+  // Add text indicating the tree type based on the current time
+  if (label === 'Spotify' && currentTime >= 2 && currentTime <= 19) {
+    textSize(45);
+    fill('#1DB954');
+    text(label, -630, -968);
+  } else if (label === 'TikTok' && currentTime >= 20 && currentTime <= 31) {
+    textSize(50);
+    fill('#EE1D52');
+    text("Tik", -630, -968);
+    fill('#69C9D0');
+    text("Tok", -580, -968);
+  } if (label === 'Spotify' && currentTime >= 32 && currentTime <= 49) {
+    textSize(50);
+    fill('#1DB954');
+    text(label, -630, -969);
+  } else if (label === 'Empty' && currentTime >= 50 && currentTime <= 56) {
+    textSize(90);
+    fill(255)
+    textStyle(BOLD);
+    text(label, -1060, -1515);
+  } else if (label === 'TikTok' && currentTime >= 57 && currentTime <= 60) {
+    textSize(50);
+    textStyle(NORMAL);
+    fill('#EE1D52');
+    text("Tik", -630, -968);
+    fill('#69C9D0');
+    text("Tok", -580, -968);
 }
-
+}
 function drawBranch(angle, strokeWeightVal) {
   strokeWeight(strokeWeightVal);
   line(0, 0, 0, -100);
